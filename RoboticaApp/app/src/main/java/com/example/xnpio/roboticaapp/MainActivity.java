@@ -1,6 +1,7 @@
 package com.example.xnpio.roboticaapp;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView leftArrow;
     private ImageView upArrow;
     private ImageView rightArrow;
+
+    private Random random;
 
     private int PUERTO = 8888;
 
@@ -64,13 +67,17 @@ public class MainActivity extends AppCompatActivity {
         rightArrow = (ImageView) findViewById(R.id.rightArrow);
         upArrow = (ImageView) findViewById(R.id.upArrow);
 
-        randomDir();
+        random = new Random();
+
+        //randomDir();
 
 
-        //startServerSocket();
+        startServerSocket();
     }
 
-    /*private void startServerSocket() {
+    /*
+
+    private void startServerSocket() {
 
         Thread thread = new Thread(new Runnable() {
 
@@ -109,6 +116,22 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.e("SERVER1", mensajeRecibido);
 
+                    if(mensajeRecibido.equals("0")){
+                        leftArrow.setImageResource(R.drawable.left_arrow2);
+                        upArrow.setImageResource(R.drawable.up_arrow);
+                        rightArrow.setImageResource(R.drawable.right_arrow);
+                    }
+                    else if(mensajeRecibido.equals("1")){
+                        leftArrow.setImageResource(R.drawable.left_arrow);
+                        upArrow.setImageResource(R.drawable.up_arrow2);
+                        rightArrow.setImageResource(R.drawable.right_arrow);
+                    }
+                    else if(mensajeRecibido.equals("2")){
+                        leftArrow.setImageResource(R.drawable.left_arrow);
+                        upArrow.setImageResource(R.drawable.up_arrow);
+                        rightArrow.setImageResource(R.drawable.right_arrow2);
+                    }
+
                     //System.out.println(mensajeRecibido);
 
                     //System.out.println("Cerrando conexión...");
@@ -130,7 +153,11 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 
-    private void startServerSocket(){
+
+
+
+    /*private void startServerSocket(){
+
         runOnUiThread(new Runnable() {
             private String stringData = null;
 
@@ -201,31 +228,127 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    */
+
+    private void startServerSocket(){
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            private String stringData = null;
+
+            public void run() {
+
+                try
+                {
+
+                    Log.e("SERVER1","INIT");
+                    sc = new ServerSocket(PUERTO);
+
+                    so = new Socket();
+
+                    //System.out.println("Esperando una conexión:");
+
+                    so = sc.accept();
 
 
+                    Log.e("SERVER1","ACCEPT");
+
+//Canales de entrada y salida de datos
+
+                    entrada = new BufferedReader(new InputStreamReader(so.getInputStream()));
+
+                    salida = new DataOutputStream(so.getOutputStream());
+
+                    mensajeRecibido = entrada.readLine();
+
+                    Log.e("SERVER1", "RECIBIDO");
+
+                    //mTextMessage.setText(mensajeRecibido);
 
 
+                    Log.e("SERVER1", mensajeRecibido);
+
+                    if(mensajeRecibido.equals("0")){
+                        leftArrow.setImageResource(R.drawable.left_arrow2);
+                        upArrow.setImageResource(R.drawable.up_arrow);
+                        rightArrow.setImageResource(R.drawable.right_arrow);
+                    }
+                    else if(mensajeRecibido.equals("1")){
+                        leftArrow.setImageResource(R.drawable.left_arrow);
+                        upArrow.setImageResource(R.drawable.up_arrow2);
+                        rightArrow.setImageResource(R.drawable.right_arrow);
+                    }
+                    else if(mensajeRecibido.equals("2")){
+                        leftArrow.setImageResource(R.drawable.left_arrow);
+                        upArrow.setImageResource(R.drawable.up_arrow);
+                        rightArrow.setImageResource(R.drawable.right_arrow2);
+                    }
+
+
+                    //System.out.println(mensajeRecibido);
+
+                    //System.out.println("Cerrando conexión...");
+
+                    sc.close();//Aqui se cierra la conexión con el cliente
+
+                }catch(Exception e )
+
+                {
+
+                    Log.e("SERVER1", "ERROR");
+                    Log.e("SERVER1", e.toString());
+
+                }
+                handler.postDelayed(this, 500);
+
+            }
+        }, 500);
+    }
+
+    /*
     public void randomDir(){
         Random rand = new Random();
         int randomNumber = 0;
-        while(true){
-            randomNumber = rand.nextInt(3);
-            if(randomNumber == 0){
-                leftArrow.setImageResource(R.drawable.left_arrow2);
-                upArrow.setImageResource(R.drawable.up_arrow);
-                rightArrow.setImageResource(R.drawable.right_arrow);
-            }
-            else if(randomNumber == 1){
-                leftArrow.setImageResource(R.drawable.left_arrow);
-                upArrow.setImageResource(R.drawable.up_arrow2);
-                rightArrow.setImageResource(R.drawable.right_arrow);
-            }
-            else{
-                leftArrow.setImageResource(R.drawable.left_arrow);
-                upArrow.setImageResource(R.drawable.up_arrow);
-                rightArrow.setImageResource(R.drawable.right_arrow2);
-            }
+        //while(true){
+        for(int j = 0; j < 10; j++){
+                for(int i = 0; i < 100000; i++){
+                    Log.e("NUmber", Integer.toString(randomNumber));
+                }
+
+                randomNumber = rand.nextInt(3);
+
+
         }
+    }
+    */
+
+    public void randomDir(){
+        int randomNumber = 0;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                int randomNumber = random.nextInt(6);
+                if(randomNumber == 0){
+                    leftArrow.setImageResource(R.drawable.left_arrow2);
+                    upArrow.setImageResource(R.drawable.up_arrow);
+                    rightArrow.setImageResource(R.drawable.right_arrow);
+                    Log.e("NUmber", "0");
+                }
+                else if(randomNumber == 1){
+                    leftArrow.setImageResource(R.drawable.left_arrow);
+                    upArrow.setImageResource(R.drawable.up_arrow2);
+                    rightArrow.setImageResource(R.drawable.right_arrow);
+                    Log.e("NUmber", "1");
+                }
+                else{
+                    leftArrow.setImageResource(R.drawable.left_arrow);
+                    upArrow.setImageResource(R.drawable.up_arrow);
+                    rightArrow.setImageResource(R.drawable.right_arrow2);
+                    Log.e("NUmber", "2");
+                }
+                handler.postDelayed(this, 500);
+            }
+        }, 500);
     }
 
 }

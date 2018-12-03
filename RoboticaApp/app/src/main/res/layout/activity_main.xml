@@ -37,13 +37,13 @@
                 android:src="@drawable/left_arrow" />
 
             <ImageView
-                android:id="@+id/rightArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/left_arrow"
                 android:visibility="invisible" />
 
             <ImageView
+                android:id="@+id/rightArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/right_arrow" />
