@@ -1,5 +1,9 @@
 # Robotica Application
 
+## Pipeline
+
+![pipeline](pipeline.jpeg)
+
 ## Experimento
 
 * Se utilizó la aplicación Ip Webcam que nos permite crear un servidor en un celular y poder mandar las imágenes capturadas por la cámara del celular a cualquier cliente que se lo pida.
