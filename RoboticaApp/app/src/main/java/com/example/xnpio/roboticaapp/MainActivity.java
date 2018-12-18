@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private Random random;
 
     private int PUERTO = 8888;
+
+    public BooVariable bv;
+
+    public int numerito = 3;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,7 +72,26 @@ public class MainActivity extends AppCompatActivity {
         rightArrow = (ImageView) findViewById(R.id.rightArrow);
         upArrow = (ImageView) findViewById(R.id.upArrow);
 
+        bv = new BooVariable();
+
         random = new Random();
+
+        bv.setListener(new BooVariable.ChangeListener() {
+            @Override
+            public void onChange() {
+                Toast.makeText(MainActivity.this,"blah", Toast.LENGTH_LONG).show();
+                Log.e("MSG","CUICK!");
+                /*if(bv.isBoo()){
+                    leftArrow.setImageResource(R.drawable.left_arrow2);
+                    upArrow.setImageResource(R.drawable.up_arrow);
+                    rightArrow.setImageResource(R.drawable.right_arrow);
+                }else{
+                    leftArrow.setImageResource(R.drawable.left_arrow);
+                    upArrow.setImageResource(R.drawable.up_arrow);
+                    rightArrow.setImageResource(R.drawable.right_arrow2);
+                }*/
+            }
+        });
 
         //randomDir();
 
@@ -75,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         startServerSocket();
     }
 
-    /*
+
 
     private void startServerSocket() {
 
@@ -85,73 +109,73 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
+                while (true) {
+                    try {
 
-                try
-                {
+                        Log.e("SERVER1", "INIT");
+                        sc = new ServerSocket(PUERTO);
 
-                    Log.e("SERVER1","INIT");
-                    sc = new ServerSocket(PUERTO);
+                        so = new Socket();
 
-                    so = new Socket();
+                        //System.out.println("Esperando una conexión:");
 
-                    //System.out.println("Esperando una conexión:");
-
-                    so = sc.accept();
+                        so = sc.accept();
 
 
-                    Log.e("SERVER1","ACCEPT");
+                        Log.e("SERVER1", "ACCEPT");
 
 //Canales de entrada y salida de datos
 
-                    entrada = new BufferedReader(new InputStreamReader(so.getInputStream()));
+                        entrada = new BufferedReader(new InputStreamReader(so.getInputStream()));
 
-                    salida = new DataOutputStream(so.getOutputStream());
+                        salida = new DataOutputStream(so.getOutputStream());
 
-                    mensajeRecibido = entrada.readLine();
+                        mensajeRecibido = entrada.readLine();
 
-                    Log.e("SERVER1", "RECIBIDO");
+                        Log.e("SERVER1", "RECIBIDO");
 
-                    //mTextMessage.setText(mensajeRecibido);
+                        //mTextMessage.setText(mensajeRecibido);
 
 
-                    Log.e("SERVER1", mensajeRecibido);
+                        Log.e("SERVER1", mensajeRecibido);
 
-                    if(mensajeRecibido.equals("0")){
-                        leftArrow.setImageResource(R.drawable.left_arrow2);
-                        upArrow.setImageResource(R.drawable.up_arrow);
-                        rightArrow.setImageResource(R.drawable.right_arrow);
+                        if (mensajeRecibido.equals("0")){
+                            bv.setBoo(false);
+                            //leftArrow.setImageResource(R.drawable.left_arrow2);
+                            //upArrow.setImageResource(R.drawable.up_arrow);
+                            //rightArrow.setImageResource(R.drawable.right_arrow);
+                        } else if (mensajeRecibido.equals("1")) {
+                            //leftArrow.setImageResource(R.drawable.left_arrow);
+                            //upArrow.setImageResource(R.drawable.up_arrow2);
+                            //rightArrow.setImageResource(R.drawable.right_arrow);
+                        } else if (mensajeRecibido.equals("2")) {
+                            bv.setBoo(true);
+                            //leftArrow.setImageResource(R.drawable.left_arrow);
+                            //upArrow.setImageResource(R.drawable.up_arrow);
+                            //rightArrow.setImageResource(R.drawable.right_arrow2);
+                        }
+
+                        //System.out.println(mensajeRecibido);
+
+                        //System.out.println("Cerrando conexión...");
+
+                        sc.close();//Aqui se cierra la conexión con el cliente
+
+                    } catch (Exception e)
+
+                    {
+
+                        Log.e("SERVER1", "ERROR");
+                        Log.e("SERVER1", e.toString());
+
                     }
-                    else if(mensajeRecibido.equals("1")){
-                        leftArrow.setImageResource(R.drawable.left_arrow);
-                        upArrow.setImageResource(R.drawable.up_arrow2);
-                        rightArrow.setImageResource(R.drawable.right_arrow);
-                    }
-                    else if(mensajeRecibido.equals("2")){
-                        leftArrow.setImageResource(R.drawable.left_arrow);
-                        upArrow.setImageResource(R.drawable.up_arrow);
-                        rightArrow.setImageResource(R.drawable.right_arrow2);
-                    }
-
-                    //System.out.println(mensajeRecibido);
-
-                    //System.out.println("Cerrando conexión...");
-
-                    sc.close();//Aqui se cierra la conexión con el cliente
-
-                }catch(Exception e )
-
-                {
-
-                    Log.e("SERVER1", "ERROR");
-                    Log.e("SERVER1", e.toString());
 
                 }
-
             }
         });
         thread.start();
     }
-    */
+
 
 
 
@@ -230,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 
-    private void startServerSocket(){
+    /*private void startServerSocket(){
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -303,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }, 500);
-    }
+    }*/
 
     /*
     public void randomDir(){
